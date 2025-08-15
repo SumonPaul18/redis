@@ -7,6 +7,7 @@ app = Flask(__name__)
 r = redis.Redis(
     host='redis',  # This is the service name in docker-compose
     port=6379,
+    password='mylabredispass123',
     db=0,
     decode_responses=True,
     socket_connect_timeout=5
