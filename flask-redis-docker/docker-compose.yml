@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  web:
+    build: .
+    ports:
+      - "5000:5000"
+    networks:
+      - redis-network
+    depends_on:
+      redis:
+        condition: service_healthy
+
+  redis:
+    image: redis:alpine
+    command: ["redis-server", "--requirepass", "mylabredispass123"]
+    environment:
+      REDIS_PASSWORD: mylabredispass123
+    networks:
+      - redis-network
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 3
+      start_period: 10s
+
+networks:
+  redis-network:
+    driver: bridge
